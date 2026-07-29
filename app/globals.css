@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --header-height: 4rem;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-height) + 1rem);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  @apply bg-white font-sans text-ink antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background-color: rgba(37, 99, 235, 0.16);
+}
+
+/* Visible, consistent focus states for keyboard users */
+:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@layer components {
+  .container-site {
+    @apply mx-auto w-full max-w-[76rem] px-5 sm:px-8 lg:px-10;
+  }
+
+  .eyebrow {
+    @apply text-[13px] font-semibold uppercase tracking-[0.14em] text-brand;
+  }
+
+  .link-quiet {
+    @apply text-body transition-colors duration-200 hover:text-ink;
+  }
+
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+}
