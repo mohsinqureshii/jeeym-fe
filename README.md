@@ -9,9 +9,15 @@ Framer Motion.
 ```bash
 npm install
 npm run dev       # http://localhost:3000
-npm run build     # production build
-npm start         # serve the production build
+npm run build     # static export → out/
 ```
+
+The site is fully static (`output: "export"`), so `npm run build` writes
+plain HTML/CSS/JS to **`out/`** — deploy that directory to any static host.
+
+**Cloudflare Pages/Workers settings:** framework preset "Next.js (Static
+HTML Export)" (or None), build command `npm run build`, build output
+directory `out`.
 
 ## Stack
 
