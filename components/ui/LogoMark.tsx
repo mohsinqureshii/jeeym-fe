@@ -20,7 +20,7 @@ export function LogoMark({
       viewBox="0 0 24 24"
       fill="none"
       aria-hidden="true"
-      className={clsx("h-8 w-8", className)}
+      className={className ?? "h-8 w-8"}
     >
       {variant === "color" ? (
         <defs>
