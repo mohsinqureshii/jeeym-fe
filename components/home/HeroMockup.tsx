@@ -1,7 +1,8 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
+  AnimatePresence,
   motion,
   useMotionValue,
   useReducedMotion,
@@ -14,29 +15,40 @@ import {
   ChevronDown,
   FileText,
   HardDrive,
-  Inbox,
+  Hash,
   ListChecks,
   Mail,
   MessageSquare,
+  Mic,
+  MicOff,
+  MonitorUp,
   Paperclip,
+  Phone,
   Search,
-  Send,
   Sparkles,
-  Star,
-  Users,
   Video,
 } from "lucide-react";
 import clsx from "clsx";
 import { LogoMark } from "@/components/ui/Logo";
 
+type Stage = "mail" | "chat" | "meeting" | "calendar" | "scheduling";
+
+const stageOrder: Stage[] = ["mail", "chat", "meeting", "calendar", "scheduling"];
+const STAGE_MS = 3800;
+
 const railApps = [
-  { icon: Mail, label: "Mail", color: "#2563EB", active: true },
-  { icon: MessageSquare, label: "Chat", color: "#8B5CF6" },
-  { icon: Video, label: "Meetings", color: "#059669" },
-  { icon: Calendar, label: "Calendar", color: "#F97316" },
-  { icon: HardDrive, label: "Drive", color: "#0D9488" },
-  { icon: FileText, label: "Documents", color: "#3B82F6" },
-  { icon: ListChecks, label: "Tasks", color: "#7C3AED" },
+  { icon: Mail, label: "Mail", color: "#2563EB", activeFor: ["mail"] as Stage[] },
+  { icon: MessageSquare, label: "Chat", color: "#8B5CF6", activeFor: ["chat"] as Stage[] },
+  { icon: Video, label: "Meetings", color: "#059669", activeFor: ["meeting"] as Stage[] },
+  {
+    icon: Calendar,
+    label: "Calendar",
+    color: "#F97316",
+    activeFor: ["calendar", "scheduling"] as Stage[],
+  },
+  { icon: HardDrive, label: "Drive", color: "#0D9488", activeFor: [] as Stage[] },
+  { icon: FileText, label: "Documents", color: "#3B82F6", activeFor: [] as Stage[] },
+  { icon: ListChecks, label: "Tasks", color: "#7C3AED", activeFor: [] as Stage[] },
 ];
 
 const emails = [
@@ -87,6 +99,37 @@ const emails = [
   },
 ];
 
+const aiPanels: Record<
+  Stage,
+  { heading: string; body: string; actions: string[] }
+> = {
+  mail: {
+    heading: "Thread summary",
+    body: "Sarah added the Q3 Financial Forecast to Thursday's leadership agenda. Daniel's draft is ready for comments.",
+    actions: ["Draft a reply to Sarah", "Create task: review forecast", "Prepare me for Thursday"],
+  },
+  chat: {
+    heading: "Channel summary",
+    body: "The Regional Expansion Strategy is ready for review. Two launch items still need owners by Friday.",
+    actions: ["Summarise this channel", "Create tasks from thread", "Draft a status update"],
+  },
+  meeting: {
+    heading: "Live meeting notes",
+    body: "Rollout agreed as phased, starting with Riyadh in March. Daniel to confirm regional pricing.",
+    actions: ["Capture action items", "Summarise so far", "Share notes to channel"],
+  },
+  calendar: {
+    heading: "Your day",
+    body: "Three meetings and two focus blocks today. Next: Weekly Leadership Review at 10:00.",
+    actions: ["Brief me on my next meeting", "Protect focus time", "Reschedule conflicts"],
+  },
+  scheduling: {
+    heading: "Scheduling suggestion",
+    body: "Thursday 14:00–14:45 works for all six attendees, with Meeting Room 2 available.",
+    actions: ["Book and send invites", "Add agenda from notes", "Suggest another time"],
+  },
+};
+
 function Avatar({
   initials,
   color,
@@ -110,9 +153,366 @@ function Avatar({
   );
 }
 
+/* ---------- Stage views ---------- */
+
+function MailView() {
+  return (
+    <div className="flex h-full flex-col">
+      <div className="flex items-center justify-between border-b border-line px-4 py-2.5">
+        <p className="text-[14px] font-bold text-ink">Inbox</p>
+        <p className="text-[12px] text-body">12 unread</p>
+      </div>
+      <ul className="min-h-0 flex-1 overflow-hidden">
+        {emails.map((m) => (
+          <li
+            key={m.subject}
+            className={clsx(
+              "flex items-start gap-3 border-b border-line/70 px-4 py-2.5",
+              m.unread && "bg-brand-faint/50"
+            )}
+          >
+            <Avatar initials={m.initials} color={m.color} />
+            <div className="min-w-0 flex-1">
+              <div className="flex items-baseline justify-between gap-2">
+                <p
+                  className={clsx(
+                    "truncate text-[13px]",
+                    m.unread ? "font-bold text-ink" : "font-medium text-ink"
+                  )}
+                >
+                  {m.from}
+                </p>
+                <p className="shrink-0 text-[11px] text-body">{m.time}</p>
+              </div>
+              <p
+                className={clsx(
+                  "truncate text-[13px]",
+                  m.unread ? "font-semibold text-ink" : "text-ink/80"
+                )}
+              >
+                {m.subject}
+              </p>
+              <p className="truncate text-[12px] text-body">{m.preview}</p>
+            </div>
+            {m.unread ? (
+              <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-brand" />
+            ) : (
+              <Paperclip className="mt-1.5 h-3 w-3 shrink-0 text-line" />
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function ChatView() {
+  return (
+    <div className="flex h-full flex-col">
+      <div className="flex items-center gap-2 border-b border-line px-4 py-2.5">
+        <Hash className="h-3.5 w-3.5 text-app-chat" aria-hidden="true" />
+        <p className="text-[14px] font-bold text-ink">Leadership</p>
+        <span className="text-[11.5px] text-body">· 8 members</span>
+      </div>
+      <div className="min-h-0 flex-1 space-y-3.5 overflow-hidden px-4 py-3.5">
+        <div className="flex gap-2.5">
+          <Avatar initials="OK" color="#7C3AED" />
+          <div className="min-w-0">
+            <p className="text-[12px]">
+              <span className="font-bold text-ink">Omar Khan</span>{" "}
+              <span className="text-body">09:20</span>
+            </p>
+            <p className="text-[13px] leading-relaxed text-ink">
+              The Regional Expansion Strategy is ready for review 🎯
+            </p>
+            <div className="mt-1.5 inline-flex items-center gap-1.5 rounded-lg border border-line bg-brand-faint px-2.5 py-1.5">
+              <FileText className="h-3.5 w-3.5 text-app-documents" />
+              <span className="text-[12px] font-medium text-ink">
+                Regional Expansion Strategy
+              </span>
+            </div>
+            <div className="mt-1.5 flex items-center gap-1.5">
+              <span className="rounded-full border border-line bg-brand-faint px-2 py-0.5 text-[11px]">
+                👍 4
+              </span>
+              <span className="rounded-full border border-line bg-brand-faint px-2 py-0.5 text-[11px]">
+                🚀 2
+              </span>
+            </div>
+          </div>
+        </div>
+        <div className="flex gap-2.5">
+          <Avatar initials="SA" color="#2563EB" />
+          <div className="min-w-0">
+            <p className="text-[12px]">
+              <span className="font-bold text-ink">Sarah Ahmed</span>{" "}
+              <span className="text-body">09:24</span>
+            </p>
+            <p className="text-[13px] leading-relaxed text-ink">
+              Adding it to Thursday&apos;s agenda — can everyone review before
+              we meet?
+            </p>
+          </div>
+        </div>
+        <div className="flex gap-2.5">
+          <Avatar initials="LH" color="#059669" />
+          <div className="min-w-0">
+            <p className="text-[12px]">
+              <span className="font-bold text-ink">Lina Hassan</span>{" "}
+              <span className="text-body">09:26</span>
+            </p>
+            <p className="text-[13px] leading-relaxed text-ink">
+              On it. I&apos;ll bring the customer feedback themes too.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div className="border-t border-line px-4 py-2.5">
+        <div className="flex items-center gap-2 rounded-lg border border-line px-3 py-1.5">
+          <span className="text-[12.5px] text-body">Message #Leadership</span>
+          <Mic className="ml-auto h-3.5 w-3.5 text-body" aria-hidden="true" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function MeetingView() {
+  const people = [
+    { n: "Sarah Ahmed", i: "SA", c: "#2563EB", talking: true },
+    { n: "Omar Khan", i: "OK", c: "#7C3AED" },
+    { n: "Lina Hassan", i: "LH", c: "#059669" },
+    { n: "Daniel Lee", i: "DL", c: "#F97316", muted: true },
+  ];
+  return (
+    <div className="flex h-full flex-col bg-[#0F1520] p-3.5">
+      <p className="mb-2.5 flex items-center justify-between text-[12.5px] font-semibold text-white/90">
+        Saudi Market Expansion
+        <span className="rounded-full bg-red-500/20 px-2 py-0.5 text-[10px] font-bold text-red-300">
+          ● REC 24:16
+        </span>
+      </p>
+      <div className="grid min-h-0 flex-1 grid-cols-2 gap-2">
+        {people.map((p) => (
+          <div
+            key={p.n}
+            className={clsx(
+              "relative flex items-center justify-center rounded-xl bg-white/[0.07]",
+              p.talking && "ring-2 ring-app-meetings"
+            )}
+          >
+            <Avatar initials={p.i} color={p.c} size="h-10 w-10 text-[13px]" />
+            <span className="absolute bottom-1.5 left-2 flex items-center gap-1 text-[10px] font-medium text-white/85">
+              {p.muted ? (
+                <MicOff className="h-2.5 w-2.5 text-red-300" />
+              ) : (
+                <Mic className="h-2.5 w-2.5" />
+              )}
+              {p.n}
+            </span>
+          </div>
+        ))}
+      </div>
+      <div className="mt-2.5 rounded-lg bg-white/[0.07] px-3 py-1.5">
+        <p className="truncate text-[11px] text-white/80">
+          <span className="font-semibold text-white">Live captions:</span>{" "}
+          “…phased rollout starting with the Riyadh office in March.”
+        </p>
+      </div>
+      <div className="mt-2.5 flex items-center justify-center gap-2">
+        {[Mic, Video, MonitorUp, Sparkles].map((I, idx) => (
+          <span
+            key={idx}
+            className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10"
+          >
+            <I className="h-3.5 w-3.5 text-white" />
+          </span>
+        ))}
+        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-red-500">
+          <Phone className="h-3.5 w-3.5 rotate-[135deg] text-white" />
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function CalendarView() {
+  const days = [
+    { label: "Mon", num: 9 },
+    { label: "Tue", num: 10 },
+    { label: "Wed", num: 11 },
+    { label: "Thu", num: 12, active: true },
+    { label: "Fri", num: 13 },
+  ];
+  const agenda = [
+    { time: "09:30", label: "Focus time", color: "#0D9488", meta: "No meetings" },
+    {
+      time: "10:00",
+      label: "Weekly Leadership Review",
+      color: "#2563EB",
+      meta: "5 attendees · Meeting Room 2",
+      join: true,
+    },
+    {
+      time: "11:30",
+      label: "Saudi Market Expansion",
+      color: "#F97316",
+      meta: "Video meeting · recorded",
+    },
+    {
+      time: "14:00",
+      label: "Customer Success Sync",
+      color: "#059669",
+      meta: "4 attendees",
+    },
+  ];
+  return (
+    <div className="flex h-full flex-col p-3.5">
+      <div className="flex items-center justify-between px-0.5 pb-2.5">
+        <p className="text-[14px] font-bold text-ink">Thursday 12 March</p>
+        <span className="rounded-full bg-brand-wash px-2.5 py-0.5 text-[11px] font-semibold text-brand">
+          Team calendar
+        </span>
+      </div>
+      <div className="mb-3 grid grid-cols-5 gap-1.5">
+        {days.map((d) => (
+          <div
+            key={d.label}
+            className={clsx(
+              "rounded-lg py-1.5 text-center",
+              d.active ? "bg-brand text-white" : "bg-brand-faint text-body"
+            )}
+          >
+            <p className="text-[9.5px] font-semibold uppercase tracking-wide">
+              {d.label}
+            </p>
+            <p
+              className={clsx(
+                "text-[13px] font-bold",
+                d.active ? "text-white" : "text-ink"
+              )}
+            >
+              {d.num}
+            </p>
+          </div>
+        ))}
+      </div>
+      <div className="min-h-0 flex-1 space-y-2 overflow-hidden">
+        {agenda.map((e) => (
+          <div
+            key={e.label}
+            className="flex items-center gap-3 rounded-xl px-3 py-2"
+            style={{
+              backgroundColor: `${e.color}0F`,
+              borderLeft: `3px solid ${e.color}`,
+            }}
+          >
+            <span className="w-10 shrink-0 text-[11.5px] font-bold tabular-nums" style={{ color: e.color }}>
+              {e.time}
+            </span>
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-[12.5px] font-semibold text-ink">
+                {e.label}
+              </p>
+              <p className="truncate text-[10.5px] text-body">{e.meta}</p>
+            </div>
+            {e.join ? (
+              <span className="shrink-0 rounded-lg bg-brand px-2.5 py-1 text-[10.5px] font-semibold text-white">
+                Join
+              </span>
+            ) : null}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function SchedulingView() {
+  const rows = [
+    { n: "Sarah Ahmed", i: "SA", c: "#2563EB", busy: [[10, 22], [55, 14]] },
+    { n: "Omar Khan", i: "OK", c: "#7C3AED", busy: [[30, 18]] },
+    { n: "Daniel Lee", i: "DL", c: "#F97316", busy: [[0, 16], [42, 10]] },
+    { n: "Lina Hassan", i: "LH", c: "#059669", busy: [[18, 10]] },
+  ];
+  return (
+    <div className="flex h-full flex-col p-3.5">
+      <div className="flex items-center justify-between px-0.5 pb-2.5">
+        <p className="text-[14px] font-bold text-ink">
+          Find a time · Weekly Leadership Review
+        </p>
+        <span className="rounded-full bg-green-50 px-2.5 py-0.5 text-[11px] font-semibold text-success">
+          45 min
+        </span>
+      </div>
+      <div className="space-y-2.5">
+        {rows.map((r) => (
+          <div key={r.n} className="flex items-center gap-2.5">
+            <Avatar initials={r.i} color={r.c} size="h-6 w-6 text-[9px]" />
+            <p className="w-24 shrink-0 truncate text-[11.5px] font-semibold text-ink">
+              {r.n}
+            </p>
+            <div className="relative h-5 flex-1 overflow-hidden rounded-md bg-brand-faint">
+              {r.busy.map(([left, width], i) => (
+                <span
+                  key={i}
+                  className="absolute inset-y-0 rounded-sm bg-line"
+                  style={{ left: `${left}%`, width: `${width}%` }}
+                />
+              ))}
+              {/* Suggested slot */}
+              <span className="absolute inset-y-0 left-[72%] w-[16%] rounded-sm border border-success/50 bg-green-100/80" />
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="mt-3.5 flex items-center gap-2.5 rounded-xl border border-line bg-brand-faint px-3.5 py-2.5">
+        <Calendar className="h-4 w-4 shrink-0 text-app-calendar" aria-hidden="true" />
+        <div className="min-w-0 flex-1">
+          <p className="text-[12.5px] font-semibold text-ink">
+            Thursday 14:00 – 14:45
+          </p>
+          <p className="truncate text-[11px] text-body">
+            All attendees available · Meeting Room 2 free
+          </p>
+        </div>
+        <span className="rounded-lg bg-brand px-3 py-1.5 text-[11.5px] font-semibold text-white">
+          Book
+        </span>
+      </div>
+      <p className="mt-2.5 flex items-center gap-1.5 px-0.5 text-[11px] text-body">
+        <Sparkles className="h-3 w-3 text-brand" aria-hidden="true" />
+        Suggested by Jeeym AI from everyone&apos;s working hours
+      </p>
+    </div>
+  );
+}
+
+const stageViews: Record<Stage, () => JSX.Element> = {
+  mail: MailView,
+  chat: ChatView,
+  meeting: MeetingView,
+  calendar: CalendarView,
+  scheduling: SchedulingView,
+};
+
+/* ---------- Main component ---------- */
+
 export default function HeroMockup({ className }: { className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
+  const [stageIndex, setStageIndex] = useState(0);
+  const stage = stageOrder[stageIndex];
+
+  // Cycle mail → chat → video call → calendar → scheduling.
+  useEffect(() => {
+    if (reduce) return;
+    const t = setTimeout(
+      () => setStageIndex((i) => (i + 1) % stageOrder.length),
+      STAGE_MS
+    );
+    return () => clearTimeout(t);
+  }, [stageIndex, reduce]);
 
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
@@ -136,6 +536,9 @@ export default function HeroMockup({ className }: { className?: string }) {
     mx.set(0);
     my.set(0);
   };
+
+  const StageView = stageViews[stage];
+  const ai = aiPanels[stage];
 
   return (
     <div
@@ -245,7 +648,7 @@ export default function HeroMockup({ className }: { className?: string }) {
         transition={{ delay: 0.25, duration: 0.7, ease: [0.21, 0.47, 0.32, 0.98] }}
         className="relative z-10 overflow-hidden rounded-2xl border border-line bg-white shadow-panel"
         role="img"
-        aria-label="Preview of the Jeeym workplace showing the mail inbox, application sidebar and AI assistant panel for the sample organisation Northstar Group"
+        aria-label="Animated preview of the Jeeym workplace cycling through mail, chat, a video meeting, the calendar and AI scheduling for the sample organisation Northstar Group"
       >
         {/* Top bar */}
         <div className="flex h-12 items-center gap-3 border-b border-line px-3 sm:px-4">
@@ -272,115 +675,53 @@ export default function HeroMockup({ className }: { className?: string }) {
         </div>
 
         <div className="flex" style={{ height: "clamp(320px, 44vw, 480px)" }}>
-          {/* App rail */}
+          {/* App rail — highlight follows the active stage */}
           <div className="flex w-12 shrink-0 flex-col items-center gap-1 border-r border-line bg-brand-faint/60 py-3 sm:w-14">
-            {railApps.map((app) => (
-              <span
-                key={app.label}
-                title={app.label}
-                className={clsx(
-                  "flex h-9 w-9 items-center justify-center rounded-lg transition-colors",
-                  app.active ? "bg-brand-wash" : "hover:bg-white"
-                )}
-              >
-                <app.icon
-                  className="h-4 w-4"
-                  style={{ color: app.active ? app.color : "#5F6B7A" }}
-                  strokeWidth={2}
-                />
-              </span>
-            ))}
+            {railApps.map((app) => {
+              const active = app.activeFor.includes(stage);
+              return (
+                <span
+                  key={app.label}
+                  title={app.label}
+                  className="relative flex h-9 w-9 items-center justify-center rounded-lg"
+                >
+                  {active ? (
+                    <motion.span
+                      layoutId="hero-rail-active"
+                      className="absolute inset-0 rounded-lg bg-brand-wash"
+                      transition={{ duration: 0.35, ease: [0.21, 0.47, 0.32, 0.98] }}
+                    />
+                  ) : null}
+                  <app.icon
+                    className="relative h-4 w-4 transition-colors duration-300"
+                    style={{ color: active ? app.color : "#5F6B7A" }}
+                    strokeWidth={2}
+                  />
+                </span>
+              );
+            })}
             <span className="mt-auto flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-brand to-app-chat">
               <Sparkles className="h-4 w-4 text-white" />
             </span>
           </div>
 
-          {/* Mail sidebar — hidden once the mockup sits in the half-width hero column */}
-          <div className="hidden w-44 shrink-0 flex-col border-r border-line py-3 md:flex lg:hidden">
-            <div className="px-3">
-              <span className="flex h-9 items-center justify-center gap-1.5 rounded-lg bg-brand text-[13px] font-semibold text-white">
-                <Send className="h-3.5 w-3.5" /> Compose
-              </span>
-            </div>
-            <nav className="mt-3 space-y-0.5 px-2 text-[13px]">
-              <span className="flex items-center justify-between rounded-lg bg-brand-wash px-2.5 py-1.5 font-semibold text-brand">
-                <span className="flex items-center gap-2">
-                  <Inbox className="h-3.5 w-3.5" /> Inbox
-                </span>
-                <span className="text-[11px]">12</span>
-              </span>
-              <span className="flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-body">
-                <Star className="h-3.5 w-3.5" /> Starred
-              </span>
-              <span className="flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-body">
-                <Send className="h-3.5 w-3.5" /> Sent
-              </span>
-              <span className="flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-body">
-                <FileText className="h-3.5 w-3.5" /> Drafts
-              </span>
-            </nav>
-            <p className="mt-4 px-4 text-[11px] font-semibold uppercase tracking-wider text-body">
-              Shared
-            </p>
-            <nav className="mt-1 space-y-0.5 px-2 text-[13px]">
-              <span className="flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-body">
-                <Users className="h-3.5 w-3.5" /> sales@northstar
-              </span>
-              <span className="flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-body">
-                <Users className="h-3.5 w-3.5" /> support@northstar
-              </span>
-            </nav>
-          </div>
-
-          {/* Inbox list */}
+          {/* Cycling workspace content */}
           <div className="min-w-0 flex-1 overflow-hidden">
-            <div className="flex items-center justify-between border-b border-line px-4 py-2.5">
-              <p className="text-[14px] font-bold text-ink">Inbox</p>
-              <p className="text-[12px] text-body">12 unread</p>
-            </div>
-            <ul>
-              {emails.map((m) => (
-                <li
-                  key={m.subject}
-                  className={clsx(
-                    "flex items-start gap-3 border-b border-line/70 px-4 py-2.5",
-                    m.unread && "bg-brand-faint/50"
-                  )}
-                >
-                  <Avatar initials={m.initials} color={m.color} />
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-baseline justify-between gap-2">
-                      <p
-                        className={clsx(
-                          "truncate text-[13px]",
-                          m.unread ? "font-bold text-ink" : "font-medium text-ink"
-                        )}
-                      >
-                        {m.from}
-                      </p>
-                      <p className="shrink-0 text-[11px] text-body">{m.time}</p>
-                    </div>
-                    <p
-                      className={clsx(
-                        "truncate text-[13px]",
-                        m.unread ? "font-semibold text-ink" : "text-ink/80"
-                      )}
-                    >
-                      {m.subject}
-                    </p>
-                    <p className="truncate text-[12px] text-body">{m.preview}</p>
-                  </div>
-                  {m.unread ? (
-                    <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-brand" />
-                  ) : (
-                    <Paperclip className="mt-1.5 h-3 w-3 shrink-0 text-line" />
-                  )}
-                </li>
-              ))}
-            </ul>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={stage}
+                initial={reduce ? false : { opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={reduce ? undefined : { opacity: 0, y: -10 }}
+                transition={{ duration: 0.35, ease: [0.21, 0.47, 0.32, 0.98] }}
+                className="h-full"
+              >
+                <StageView />
+              </motion.div>
+            </AnimatePresence>
           </div>
 
-          {/* AI panel */}
+          {/* AI panel — content follows the active stage */}
           <div className="hidden w-60 shrink-0 flex-col border-l border-line bg-brand-faint/40 xl:flex">
             <div className="flex items-center gap-2 border-b border-line px-4 py-3">
               <span className="flex h-6 w-6 items-center justify-center rounded-md bg-gradient-to-br from-brand to-app-chat">
@@ -388,34 +729,64 @@ export default function HeroMockup({ className }: { className?: string }) {
               </span>
               <p className="text-[13px] font-bold text-ink">Jeeym AI</p>
             </div>
-            <div className="space-y-3 p-3.5">
-              <div className="rounded-xl border border-line bg-white p-3">
-                <p className="text-[11px] font-semibold uppercase tracking-wider text-body">
-                  Thread summary
-                </p>
-                <p className="mt-1.5 text-[12px] leading-relaxed text-ink">
-                  Sarah added the Q3 Financial Forecast to Thursday&apos;s
-                  leadership agenda. Daniel&apos;s draft is ready for comments.
-                </p>
-              </div>
-              <div className="rounded-xl border border-line bg-white p-3">
-                <p className="text-[11px] font-semibold uppercase tracking-wider text-body">
-                  Suggested actions
-                </p>
-                <div className="mt-2 space-y-1.5">
-                  <span className="block rounded-lg bg-brand-wash px-2.5 py-1.5 text-[12px] font-medium text-brand">
-                    Draft a reply to Sarah
-                  </span>
-                  <span className="block rounded-lg bg-brand-wash px-2.5 py-1.5 text-[12px] font-medium text-brand">
-                    Create task: review forecast
-                  </span>
-                  <span className="block rounded-lg bg-brand-wash px-2.5 py-1.5 text-[12px] font-medium text-brand">
-                    Prepare me for Thursday
-                  </span>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={stage}
+                initial={reduce ? false : { opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={reduce ? undefined : { opacity: 0, y: -8 }}
+                transition={{ duration: 0.3, delay: 0.08 }}
+                className="space-y-3 p-3.5"
+              >
+                <div className="rounded-xl border border-line bg-white p-3">
+                  <p className="text-[11px] font-semibold uppercase tracking-wider text-body">
+                    {ai.heading}
+                  </p>
+                  <p className="mt-1.5 text-[12px] leading-relaxed text-ink">
+                    {ai.body}
+                  </p>
                 </div>
-              </div>
-            </div>
+                <div className="rounded-xl border border-line bg-white p-3">
+                  <p className="text-[11px] font-semibold uppercase tracking-wider text-body">
+                    Suggested actions
+                  </p>
+                  <div className="mt-2 space-y-1.5">
+                    {ai.actions.map((action) => (
+                      <span
+                        key={action}
+                        className="block rounded-lg bg-brand-wash px-2.5 py-1.5 text-[12px] font-medium text-brand"
+                      >
+                        {action}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
           </div>
+        </div>
+
+        {/* Stage progress dots */}
+        <div
+          className="flex items-center justify-center gap-1.5 border-t border-line bg-brand-faint/40 py-2"
+          aria-hidden="true"
+        >
+          {stageOrder.map((s, i) => (
+            <button
+              key={s}
+              type="button"
+              tabIndex={-1}
+              onClick={() => setStageIndex(i)}
+              className="pointer-events-auto p-0.5"
+            >
+              <span
+                className={clsx(
+                  "block h-1.5 rounded-full transition-all duration-300",
+                  i === stageIndex ? "w-5 bg-brand" : "w-1.5 bg-line"
+                )}
+              />
+            </button>
+          ))}
         </div>
       </motion.div>
 

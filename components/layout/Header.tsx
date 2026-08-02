@@ -80,7 +80,7 @@ export default function Header() {
     >
       <div className="container-site flex h-16 items-center justify-between gap-4">
         <div className="flex items-center gap-8">
-          <Logo animated />
+          <Logo />
           <nav aria-label="Main navigation" className="hidden lg:block">
             <ul className="flex items-center gap-1">
               {menus.slice(0, 2).map((m) => (

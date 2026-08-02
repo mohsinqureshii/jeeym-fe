@@ -51,7 +51,7 @@ export default function LoginPage() {
           </span>
         ))}
         <div className="relative flex h-full flex-col justify-between p-12">
-          <Logo inverted animated />
+          <Logo inverted />
           <div className="max-w-md">
             <span
               className="mb-5 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/15"

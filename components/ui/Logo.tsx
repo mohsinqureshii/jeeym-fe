@@ -1,6 +1,5 @@
 import Link from "next/link";
 import clsx from "clsx";
-import AnimatedLogoMark from "./AnimatedLogoMark";
 import { LogoMark, type LogoVariant } from "./LogoMark";
 
 export { LogoMark };
@@ -10,11 +9,9 @@ interface LogoProps {
   className?: string;
   /** White wordmark + white mark for dark backgrounds. */
   inverted?: boolean;
-  /** Morphing mark that cycles logo → mail → chat → video → calendar → scheduling. */
-  animated?: boolean;
 }
 
-export default function Logo({ className, inverted = false, animated = false }: LogoProps) {
+export default function Logo({ className, inverted = false }: LogoProps) {
   const variant: LogoVariant = inverted ? "white" : "color";
   return (
     <Link
@@ -22,11 +19,7 @@ export default function Logo({ className, inverted = false, animated = false }: 
       className={clsx("flex items-center gap-2.5", className)}
       aria-label="Jeeym home"
     >
-      {animated ? (
-        <AnimatedLogoMark variant={variant} className="h-8 w-8" />
-      ) : (
-        <LogoMark variant={variant} />
-      )}
+      <LogoMark variant={variant} />
       <span
         className={clsx(
           "relative pr-2 text-[22px] font-bold tracking-tight",
