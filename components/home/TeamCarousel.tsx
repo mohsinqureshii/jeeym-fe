@@ -1,10 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
-  ArrowLeft,
   ArrowRight,
   Check,
   FileText,
@@ -570,25 +569,7 @@ const cards: CarouselCard[] = [
 /* ---------- Carousel ---------- */
 
 export default function TeamCarousel() {
-  const trackRef = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
-  const [canPrev, setCanPrev] = useState(false);
-  const [canNext, setCanNext] = useState(true);
-
-  const updateArrows = () => {
-    const track = trackRef.current;
-    if (!track) return;
-    setCanPrev(track.scrollLeft > 8);
-    setCanNext(track.scrollLeft < track.scrollWidth - track.clientWidth - 8);
-  };
-
-  const scrollBy = (dir: 1 | -1) => {
-    const track = trackRef.current;
-    if (!track) return;
-    const card = track.querySelector("article");
-    const width = card ? card.clientWidth + 28 : 540;
-    track.scrollBy({ left: dir * width, behavior: "smooth" });
-  };
 
   return (
     <section className="overflow-hidden bg-gradient-to-b from-[#FBFAFF] to-[#F1EDFF] py-16 sm:py-20 lg:py-24">
@@ -598,43 +579,19 @@ export default function TeamCarousel() {
             <h2 className="text-display text-ink">
               How every team runs smarter with Jeeym
             </h2>
-            <div className="mt-7 flex items-center justify-center gap-3">
-              <Link
-                href="/start"
-                className="inline-flex h-[52px] items-center gap-2 rounded-full bg-gradient-to-r from-brand via-brand-bright to-app-chat px-8 text-base font-semibold text-white shadow-[0_4px_20px_rgba(59,130,246,0.35)] transition-all duration-200 hover:shadow-[0_6px_28px_rgba(59,130,246,0.45)] active:translate-y-px"
-              >
-                Start free
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </Link>
-              <button
-                type="button"
-                onClick={() => scrollBy(-1)}
-                disabled={!canPrev}
-                aria-label="Previous card"
-                className="flex h-[52px] w-[52px] items-center justify-center rounded-full border border-line bg-white text-ink shadow-sm transition-all duration-200 hover:bg-brand-faint hover:shadow-card disabled:opacity-35"
-              >
-                <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-              </button>
-              <button
-                type="button"
-                onClick={() => scrollBy(1)}
-                disabled={!canNext}
-                aria-label="Next card"
-                className="flex h-[52px] w-[52px] items-center justify-center rounded-full border border-line bg-white text-ink shadow-sm transition-all duration-200 hover:bg-brand-faint hover:shadow-card disabled:opacity-35"
-              >
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </button>
-            </div>
+            <Link
+              href="/start"
+              className="mt-7 inline-flex h-[52px] items-center gap-2 rounded-full bg-gradient-to-r from-brand via-brand-bright to-app-chat px-8 text-base font-semibold text-white shadow-[0_4px_20px_rgba(59,130,246,0.35)] transition-all duration-200 hover:shadow-[0_6px_28px_rgba(59,130,246,0.45)] active:translate-y-px"
+            >
+              Start free
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Link>
           </div>
         </div>
       </Reveal>
 
       {/* Full-bleed track with a slim gutter — the first card starts near the edge */}
-      <div
-        ref={trackRef}
-        onScroll={updateArrows}
-        className="flex snap-x snap-mandatory gap-7 overflow-x-auto scroll-smooth px-5 pb-5 pt-2 scrollbar-none scroll-px-5 sm:px-8 sm:scroll-px-8"
-      >
+      <div className="flex snap-x snap-mandatory gap-7 overflow-x-auto scroll-smooth px-5 pb-5 pt-2 scrollbar-none scroll-px-5 sm:px-8 sm:scroll-px-8">
         {cards.map((card, i) => (
           <motion.article
             key={card.title}

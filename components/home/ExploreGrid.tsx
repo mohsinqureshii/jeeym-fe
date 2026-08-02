@@ -8,43 +8,44 @@ import {
   PackageOpen,
   Users2,
 } from "lucide-react";
+import Button from "@/components/ui/Button";
 import Reveal from "@/components/ui/Reveal";
 
 const tiles = [
   {
     icon: BookOpen,
     title: "Product guides",
-    copy: "Set up your workplace, applications and policies step by step.",
+    copy: "Set up your workplace step by step.",
     href: "/resources#guides",
   },
   {
     icon: Newspaper,
     title: "Blog",
-    copy: "Product thinking and workplace practices from the Jeeym team.",
+    copy: "Product thinking from the Jeeym team.",
     href: "/resources#blog",
   },
   {
     icon: LifeBuoy,
     title: "Help centre",
-    copy: "Answers and troubleshooting for every Jeeym application.",
+    copy: "Answers for every application.",
     href: "/resources#help-centre",
   },
   {
     icon: Users2,
     title: "Customer stories",
-    copy: "How organisations run their daily work on Jeeym.",
+    copy: "How organisations run on Jeeym.",
     href: "/resources#customer-stories",
   },
   {
     icon: Code2,
     title: "Documentation",
-    copy: "APIs, webhooks and integration guides for developers.",
+    copy: "APIs, webhooks and integrations.",
     href: "/resources#developers",
   },
   {
     icon: PackageOpen,
     title: "Migration centre",
-    copy: "Move email, files, calendars and users with guided support.",
+    copy: "Move email, files and users with help.",
     href: "/resources#migration",
   },
 ];
@@ -52,41 +53,48 @@ const tiles = [
 export default function ExploreGrid() {
   return (
     <section className="bg-gradient-to-b from-[#FFFBF3] to-[#FCF0DF] py-16 sm:py-20 lg:py-24">
-      <div className="container-site">
-        <Reveal>
-          <div className="mx-auto mb-12 max-w-2xl text-center">
-            <h2 className="text-display text-ink">
-              Explore more and unlock Jeeym&apos;s full power
-            </h2>
-          </div>
-        </Reveal>
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="container-site grid items-center gap-10 lg:grid-cols-[1.2fr_1fr] lg:gap-16">
+        {/* Tiles — left */}
+        <div className="order-2 grid gap-4 sm:grid-cols-2 lg:order-1">
           {tiles.map((tile, i) => (
-            <Reveal key={tile.title} delay={Math.min((i % 3) * 0.06, 0.18)}>
+            <Reveal key={tile.title} x={-28} y={0} delay={Math.min(i * 0.06, 0.3)}>
               <Link
                 href={tile.href}
-                className="group flex h-full flex-col rounded-2xl border border-line bg-white p-6 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:shadow-card-hover"
+                className="group flex h-full items-start gap-3.5 rounded-2xl border border-white/80 bg-white p-5 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:shadow-card-hover"
               >
-                <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-wash text-brand" aria-hidden="true">
+                <span
+                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-orange-50 text-app-calendar"
+                  aria-hidden="true"
+                >
                   <tile.icon className="h-5 w-5" strokeWidth={2} />
                 </span>
-                <h3 className="mt-4 text-[17px] font-bold text-ink group-hover:text-brand">
-                  {tile.title}
-                </h3>
-                <p className="mt-1.5 flex-1 text-[14px] leading-relaxed text-body">
-                  {tile.copy}
-                </p>
-                <span className="mt-4 inline-flex items-center gap-1.5 text-[14.5px] font-semibold text-brand">
-                  Explore
-                  <ArrowRight
-                    className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5"
-                    aria-hidden="true"
-                  />
+                <span>
+                  <span className="block text-[15.5px] font-bold text-ink group-hover:text-brand">
+                    {tile.title}
+                  </span>
+                  <span className="mt-0.5 block text-[13px] leading-relaxed text-body">
+                    {tile.copy}
+                  </span>
                 </span>
               </Link>
             </Reveal>
           ))}
         </div>
+
+        {/* Text — right */}
+        <Reveal x={28} y={0} className="order-1 lg:order-2">
+          <h2 className="text-display text-ink">
+            Explore more and unlock Jeeym&apos;s full power
+          </h2>
+          <p className="mt-4 max-w-md text-lead text-body">
+            Guides, stories, documentation and migration help—everything you
+            need to get your organisation up and running.
+          </p>
+          <Button href="/resources" variant="secondary" size="lg" className="mt-7">
+            Visit the resource centre
+            <ArrowRight className="h-4 w-4" aria-hidden="true" />
+          </Button>
+        </Reveal>
       </div>
     </section>
   );

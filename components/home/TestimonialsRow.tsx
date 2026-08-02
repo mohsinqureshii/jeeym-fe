@@ -36,58 +36,56 @@ const quotes = [
 export default function TestimonialsRow() {
   return (
     <section className="bg-gradient-to-b from-[#F6F7FF] to-[#EBEEFF] py-16 sm:py-20 lg:py-24">
-      <div className="container-site">
-        <Reveal>
-          <div className="mx-auto mb-12 max-w-2xl text-center">
-            <h2 className="text-display text-ink">
-              Hear from organisations like yours
-            </h2>
-          </div>
-        </Reveal>
-
-        <div className="grid gap-5 lg:grid-cols-3">
+      <div className="container-site grid items-center gap-10 lg:grid-cols-[1.2fr_1fr] lg:gap-16">
+        {/* Quote cards — left */}
+        <div className="order-2 space-y-4 lg:order-1">
           {quotes.map((q, i) => (
-            <Reveal key={q.role} delay={i * 0.08}>
-              <figure className="flex h-full flex-col rounded-2.5xl border border-white/80 bg-white p-7 shadow-card transition-shadow duration-200 hover:shadow-card-hover">
-                <Quote
-                  className="h-8 w-8 rounded-lg bg-brand p-1.5 text-white"
-                  aria-hidden="true"
-                />
-                <blockquote className="mt-4 flex-1 text-[15.5px] font-medium leading-relaxed text-ink">
-                  &ldquo;{q.quote}&rdquo;
-                </blockquote>
-                <figcaption className="mt-5 flex items-center gap-3">
+            <Reveal key={q.role} x={-28} y={0} delay={i * 0.1}>
+              <figure className="rounded-2.5xl border border-white/80 bg-white p-6 shadow-card transition-shadow duration-200 hover:shadow-card-hover">
+                <div className="flex items-start gap-4">
                   <span
-                    className="flex h-10 w-10 items-center justify-center rounded-full text-[13px] font-bold text-white"
+                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-[13px] font-bold text-white"
                     style={{ backgroundColor: q.color }}
                     aria-hidden="true"
                   >
                     {q.initials}
                   </span>
-                  <span>
-                    <span className="block text-[14.5px] font-bold text-ink">
-                      {q.role}
-                    </span>
-                    <span className="block text-[13px] text-body">{q.org}</span>
-                  </span>
-                </figcaption>
+                  <div className="min-w-0">
+                    <blockquote className="text-[14.5px] font-medium leading-relaxed text-ink">
+                      &ldquo;{q.quote}&rdquo;
+                    </blockquote>
+                    <figcaption className="mt-2.5 text-[13px] text-body">
+                      <span className="font-bold text-ink">{q.role}</span> ·{" "}
+                      {q.org}
+                    </figcaption>
+                  </div>
+                </div>
               </figure>
             </Reveal>
           ))}
         </div>
 
-        <Reveal className="mt-6">
-          <p className="mx-auto max-w-2xl rounded-lg border border-dashed border-warning/40 bg-amber-50 px-4 py-2.5 text-center text-[12.5px] font-medium text-amber-700">
-            CMS note: placeholder quotes — replace with verified customer
-            quotes before publication.
+        {/* Text — right */}
+        <Reveal x={28} y={0} className="order-1 lg:order-2">
+          <Quote
+            className="h-10 w-10 rounded-xl bg-brand p-2 text-white"
+            aria-hidden="true"
+          />
+          <h2 className="mt-5 text-display text-ink">
+            Hear from organisations like yours
+          </h2>
+          <p className="mt-4 max-w-md text-lead text-body">
+            From startups to regulated enterprises, teams consolidate their
+            daily work on Jeeym.
           </p>
-        </Reveal>
-
-        <Reveal className="mt-8 text-center">
-          <Button href="/resources#customer-stories" variant="secondary">
+          <Button href="/resources#customer-stories" variant="secondary" size="lg" className="mt-7">
             Read customer stories
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Button>
+          <p className="mt-6 max-w-md rounded-lg border border-dashed border-warning/40 bg-amber-50 px-4 py-2.5 text-[12.5px] font-medium text-amber-700">
+            CMS note: placeholder quotes — replace with verified customer
+            quotes before publication.
+          </p>
         </Reveal>
       </div>
     </section>

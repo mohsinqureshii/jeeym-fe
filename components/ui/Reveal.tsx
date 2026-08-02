@@ -7,6 +7,8 @@ interface RevealProps {
   children: ReactNode;
   delay?: number;
   y?: number;
+  /** Horizontal slide distance — negative slides in from the left. */
+  x?: number;
   className?: string;
   once?: boolean;
 }
@@ -16,6 +18,7 @@ export default function Reveal({
   children,
   delay = 0,
   y = 24,
+  x = 0,
   className,
   once = true,
 }: RevealProps) {
@@ -23,8 +26,8 @@ export default function Reveal({
   return (
     <motion.div
       className={className}
-      initial={reduce ? false : { opacity: 0, y }}
-      whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
+      initial={reduce ? false : { opacity: 0, y, x }}
+      whileInView={reduce ? undefined : { opacity: 1, y: 0, x: 0 }}
       viewport={{ once, margin: "-80px" }}
       transition={{ duration: 0.55, delay, ease: [0.21, 0.47, 0.32, 0.98] }}
     >

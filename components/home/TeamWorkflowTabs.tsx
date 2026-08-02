@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight, Check, ChevronRight } from "lucide-react";
 import clsx from "clsx";
 import AppIcon from "@/components/ui/AppIcon";
 import { getSolution } from "@/lib/solutions";
@@ -25,66 +25,55 @@ export default function TeamWorkflowTabs() {
   if (!solution) return null;
 
   return (
-    <section className="bg-gradient-to-b from-[#F1FBF5] to-[#E2F6EB] py-16 sm:py-20 lg:py-28">
-      <div className="container-site">
-        <div className="mx-auto mb-10 max-w-2xl text-center">
-          <h2 className="text-display text-ink">
-            Modernise every team&apos;s workflow with AI
-          </h2>
-        </div>
-
-        <div
-          role="tablist"
-          aria-label="Workflows by team"
-          className="-mx-5 flex gap-2 overflow-x-auto px-5 pb-2 scrollbar-none sm:mx-0 sm:flex-wrap sm:justify-center sm:px-0"
-        >
-          {teamSlugs.map((t, i) => (
-            <button
-              key={t.slug}
-              role="tab"
-              id={`team-tab-${t.slug}`}
-              aria-selected={active === i}
-              aria-controls={`team-panel-${t.slug}`}
-              onClick={() => setActive(i)}
-              className={clsx(
-                "shrink-0 rounded-full px-5 py-2.5 text-[15px] font-semibold transition-all duration-200",
-                active === i
-                  ? "bg-brand text-white shadow-[0_2px_10px_rgba(37,99,235,0.3)]"
-                  : "border border-line bg-white text-body hover:border-brand/30 hover:text-ink"
-              )}
+    <section className="bg-gradient-to-b from-[#F1FBF5] to-[#E2F6EB] py-16 sm:py-20 lg:py-24">
+      <div className="container-site grid items-center gap-10 lg:grid-cols-[1.25fr_1fr] lg:gap-16">
+        {/* Animated panel — left */}
+        <div className="order-2 lg:order-1">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={solution.slug}
+              role="tabpanel"
+              id={`team-panel-${solution.slug}`}
+              aria-labelledby={`team-tab-${solution.slug}`}
+              initial={reduce ? false : { opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={reduce ? undefined : { opacity: 0, y: -10 }}
+              transition={{ duration: 0.32, ease: [0.21, 0.47, 0.32, 0.98] }}
+              className="rounded-2.5xl border border-white/80 bg-white p-7 shadow-panel sm:p-9"
             >
-              {t.label}
-            </button>
-          ))}
-        </div>
-
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={solution.slug}
-            role="tabpanel"
-            id={`team-panel-${solution.slug}`}
-            aria-labelledby={`team-tab-${solution.slug}`}
-            initial={reduce ? false : { opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={reduce ? undefined : { opacity: 0, y: -8 }}
-            transition={{ duration: 0.32, ease: [0.21, 0.47, 0.32, 0.98] }}
-            className="mx-auto mt-8 grid max-w-5xl items-center gap-8 overflow-hidden rounded-2.5xl border border-line bg-white p-7 shadow-panel sm:p-10 lg:grid-cols-[1.2fr_1fr]"
-          >
-            <div>
               <h3 className="text-heading text-ink">{solution.headline}</h3>
-              <p className="mt-3 max-w-lg text-[16px] leading-relaxed text-body">
+              <p className="mt-3 text-[15.5px] leading-relaxed text-body">
                 {solution.copy}
               </p>
               <ul className="mt-5 space-y-2.5">
                 {solution.points.slice(0, 3).map((p) => (
-                  <li key={p} className="flex items-start gap-2.5 text-[15px] font-medium text-ink">
-                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand-wash">
-                      <Check className="h-3 w-3 text-brand" aria-hidden="true" />
+                  <li
+                    key={p}
+                    className="flex items-start gap-2.5 text-[14.5px] font-medium text-ink"
+                  >
+                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-green-50">
+                      <Check className="h-3 w-3 text-success" aria-hidden="true" />
                     </span>
                     {p}
                   </li>
                 ))}
               </ul>
+              <div className="mt-6 flex flex-wrap items-center gap-2">
+                {solution.products.slice(0, 4).map((id) => {
+                  const p = productMap[id];
+                  return (
+                    <span
+                      key={id}
+                      className="flex items-center gap-2 rounded-full border border-line bg-brand-faint/70 py-1.5 pl-1.5 pr-3.5"
+                    >
+                      <AppIcon product={p} size="sm" className="h-6 w-6 rounded-md" />
+                      <span className="text-[12.5px] font-semibold text-ink">
+                        {p.name}
+                      </span>
+                    </span>
+                  );
+                })}
+              </div>
               <Link
                 href={`/solutions/${solution.slug}`}
                 className="mt-6 inline-flex items-center gap-1.5 text-[15px] font-semibold text-brand hover:text-brand-deep"
@@ -92,34 +81,48 @@ export default function TeamWorkflowTabs() {
                 Explore Jeeym for {solution.name.toLowerCase()}
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Link>
-            </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
 
-            <div className="rounded-2xl bg-gradient-to-br from-brand-wash via-brand-faint to-[#F4F1FE] p-6">
-              <p className="text-[13px] font-semibold uppercase tracking-[0.12em] text-body">
-                Most used by {solution.name.toLowerCase()}
-              </p>
-              <div className="mt-4 space-y-2.5">
-                {solution.products.slice(0, 4).map((id) => {
-                  const p = productMap[id];
-                  return (
-                    <div
-                      key={id}
-                      className="flex items-center gap-3 rounded-xl border border-line bg-white px-3.5 py-2.5 shadow-sm"
-                    >
-                      <AppIcon product={p} size="sm" />
-                      <div className="min-w-0">
-                        <p className="text-[14px] font-bold text-ink">{p.name}</p>
-                        <p className="truncate text-[12px] text-body">
-                          {p.tagline}
-                        </p>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </motion.div>
-        </AnimatePresence>
+        {/* Heading + vertical tabs — right */}
+        <div className="order-1 lg:order-2">
+          <h2 className="text-display text-ink">
+            Modernise every team&apos;s workflow with AI
+          </h2>
+          <div
+            role="tablist"
+            aria-label="Workflows by team"
+            aria-orientation="vertical"
+            className="mt-7 flex flex-col gap-1.5"
+          >
+            {teamSlugs.map((t, i) => (
+              <button
+                key={t.slug}
+                role="tab"
+                id={`team-tab-${t.slug}`}
+                aria-selected={active === i}
+                aria-controls={`team-panel-${t.slug}`}
+                onClick={() => setActive(i)}
+                className={clsx(
+                  "flex items-center justify-between rounded-xl px-4 py-3 text-left text-[15.5px] font-semibold transition-all duration-200",
+                  active === i
+                    ? "bg-white text-brand shadow-card"
+                    : "text-body hover:bg-white/60 hover:text-ink"
+                )}
+              >
+                {t.label}
+                <ChevronRight
+                  className={clsx(
+                    "h-4 w-4 transition-all duration-200",
+                    active === i ? "translate-x-0 text-brand" : "-translate-x-1 text-body/40"
+                  )}
+                  aria-hidden="true"
+                />
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );

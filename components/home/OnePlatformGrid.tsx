@@ -11,83 +11,70 @@ export default function OnePlatformGrid() {
 
   return (
     <section
-      className="bg-gradient-to-b from-white to-[#FFF6EC] py-16 sm:py-20 lg:py-28"
+      className="bg-gradient-to-b from-white to-[#FFF6EC] py-16 sm:py-20 lg:py-24"
       id="products"
     >
-      <div className="container-site">
-        <Reveal>
-          <div className="mx-auto mb-12 max-w-2xl text-center">
-            <h2 className="text-display text-ink">
-              One platform. One subscription.
-              <br className="hidden sm:block" /> Fully integrated.
-            </h2>
-            <p className="mt-4 text-lead text-body">
-              Every application is included—one identity, one search experience
-              and one admin console across your whole workplace.
-            </p>
-            <Button href="/start" className="mt-6">
-              Get started for free
-              <ArrowRight className="h-4 w-4" aria-hidden="true" />
-            </Button>
-          </div>
-        </Reveal>
+      <div className="container-site grid items-center gap-10 lg:grid-cols-[1fr_1.2fr] lg:gap-16">
+        {/* Text — left */}
+        <Reveal x={-28} y={0}>
+          <h2 className="text-display text-ink">
+            One platform. One subscription. Fully integrated.
+          </h2>
+          <p className="mt-4 max-w-md text-lead text-body">
+            Every application is included—one identity, one search experience
+            and one admin console across your whole workplace.
+          </p>
+          <Button href="/start" size="lg" className="mt-7">
+            Get started for free
+            <ArrowRight className="h-4 w-4" aria-hidden="true" />
+          </Button>
 
-        {/* Jeeym AI banner tile */}
-        <Reveal>
+          {/* Jeeym AI banner */}
           <Link
             href={ai.href}
-            className="group mb-5 flex flex-col items-start gap-4 rounded-2.5xl border border-line bg-gradient-to-r from-brand-wash via-white to-[#F4F1FE] p-6 shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:shadow-card-hover sm:flex-row sm:items-center sm:p-7"
+            className="group mt-7 flex max-w-md items-start gap-3.5 rounded-2xl border border-line bg-gradient-to-r from-brand-wash to-[#F4F1FE] p-5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-card"
           >
-            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-brand to-app-chat">
-              <Sparkles className="h-6 w-6 text-white" aria-hidden="true" />
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-brand to-app-chat">
+              <Sparkles className="h-5 w-5 text-white" aria-hidden="true" />
             </span>
-            <span className="flex-1">
-              <span className="block text-[19px] font-bold text-ink group-hover:text-brand">
+            <span>
+              <span className="block text-[15.5px] font-bold text-ink group-hover:text-brand">
                 Jeeym AI — included across every application
               </span>
-              <span className="mt-1 block text-[14.5px] leading-relaxed text-body">
-                Ask questions, draft content, summarise work and take action—
-                grounded in your organisation and strictly permission-aware.
+              <span className="mt-1 block text-[13.5px] leading-relaxed text-body">
+                Grounded in your organisation and strictly permission-aware.
               </span>
             </span>
-            <span className="inline-flex items-center gap-1.5 text-[15px] font-semibold text-brand">
-              Explore
-              <ArrowRight
-                className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5"
-                aria-hidden="true"
-              />
-            </span>
           </Link>
         </Reveal>
 
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {tiles.map((p, i) => (
-            <Reveal key={p.id} delay={Math.min((i % 4) * 0.05, 0.2)}>
-              <Link
-                href={p.href}
-                className="group flex h-full flex-col rounded-2xl border border-line bg-white p-5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-brand/25 hover:shadow-card"
-              >
-                <AppIcon product={p} size="md" />
-                <p className="mt-3.5 text-[16px] font-bold text-ink group-hover:text-brand">
-                  {p.name}
-                </p>
-                <p className="mt-1 flex-1 text-[13.5px] leading-relaxed text-body">
-                  {p.tagline}
-                </p>
-              </Link>
-            </Reveal>
-          ))}
+        {/* Compact application grid — right */}
+        <div>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+            {tiles.map((p, i) => (
+              <Reveal key={p.id} x={28} y={0} delay={Math.min((i % 3) * 0.05 + Math.floor(i / 3) * 0.04, 0.3)}>
+                <Link
+                  href={p.href}
+                  className="group flex items-center gap-2.5 rounded-xl border border-line bg-white px-3.5 py-3 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-brand/25 hover:shadow-card"
+                >
+                  <AppIcon product={p} size="sm" />
+                  <span className="truncate text-[14px] font-bold text-ink group-hover:text-brand">
+                    {p.name}
+                  </span>
+                </Link>
+              </Reveal>
+            ))}
+          </div>
+          <Reveal delay={0.2} y={10}>
+            <Link
+              href="/product"
+              className="mt-5 inline-flex items-center gap-1.5 text-[14.5px] font-semibold text-brand hover:text-brand-deep"
+            >
+              Explore all Jeeym products
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Link>
+          </Reveal>
         </div>
-
-        <Reveal className="mt-8 text-center">
-          <Link
-            href="/product"
-            className="inline-flex items-center gap-1.5 text-[15px] font-semibold text-brand hover:text-brand-deep"
-          >
-            Explore all Jeeym products
-            <ArrowRight className="h-4 w-4" aria-hidden="true" />
-          </Link>
-        </Reveal>
       </div>
     </section>
   );
