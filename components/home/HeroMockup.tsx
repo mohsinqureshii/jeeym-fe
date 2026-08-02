@@ -110,7 +110,7 @@ function Avatar({
   );
 }
 
-export default function HeroMockup() {
+export default function HeroMockup({ className }: { className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
 
@@ -142,12 +142,12 @@ export default function HeroMockup() {
       ref={ref}
       onMouseMove={onMouseMove}
       onMouseLeave={onMouseLeave}
-      className="relative mx-auto mt-14 max-w-5xl sm:mt-16 lg:mt-20"
+      className={clsx("relative", className)}
     >
       {/* Floating application icons */}
       <motion.div
         style={reduce ? undefined : { x: floatX1, y: floatY1 }}
-        className="pointer-events-none absolute -left-4 -top-8 z-20 hidden gap-3 sm:flex lg:-left-16"
+        className="pointer-events-none absolute -left-4 -top-8 z-20 hidden gap-3 sm:flex lg:-left-6"
         aria-hidden="true"
       >
         <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-white shadow-card ring-1 ring-line">
@@ -156,7 +156,7 @@ export default function HeroMockup() {
       </motion.div>
       <motion.div
         style={reduce ? undefined : { x: floatX2, y: floatY2 }}
-        className="pointer-events-none absolute -right-4 top-16 z-20 hidden sm:block lg:-right-14"
+        className="pointer-events-none absolute -right-4 top-16 z-20 hidden sm:block lg:-right-5"
         aria-hidden="true"
       >
         <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-white shadow-card ring-1 ring-line">
@@ -179,7 +179,7 @@ export default function HeroMockup() {
         initial={reduce ? false : { opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.55, duration: 0.6 }}
-        className="absolute -right-3 -top-10 z-20 hidden w-60 rounded-2xl border border-line bg-white p-3.5 shadow-card-hover md:block lg:-right-20"
+        className="absolute -right-3 -top-10 z-20 hidden w-60 rounded-2xl border border-line bg-white p-3.5 shadow-card-hover md:block lg:-right-6"
         aria-hidden="true"
       >
         <div className="flex items-center gap-2.5">
@@ -210,7 +210,7 @@ export default function HeroMockup() {
         initial={reduce ? false : { opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.75, duration: 0.6 }}
-        className="absolute -bottom-8 -left-3 z-20 hidden w-64 rounded-2xl border border-line bg-white p-3.5 shadow-card-hover md:block lg:-left-20"
+        className="absolute -bottom-8 -left-3 z-20 hidden w-64 rounded-2xl border border-line bg-white p-3.5 shadow-card-hover md:block lg:-left-8"
         aria-hidden="true"
       >
         <div className="flex items-start gap-2.5">
@@ -251,7 +251,7 @@ export default function HeroMockup() {
         <div className="flex h-12 items-center gap-3 border-b border-line px-3 sm:px-4">
           <div className="flex items-center gap-2">
             <LogoMark className="h-6 w-6" />
-            <span className="hidden items-center gap-1 text-[13px] font-semibold text-ink sm:flex">
+            <span className="hidden items-center gap-1 whitespace-nowrap text-[13px] font-semibold text-ink sm:flex">
               Northstar Group
               <ChevronDown className="h-3.5 w-3.5 text-body" />
             </span>
@@ -295,8 +295,8 @@ export default function HeroMockup() {
             </span>
           </div>
 
-          {/* Mail sidebar */}
-          <div className="hidden w-44 shrink-0 flex-col border-r border-line py-3 md:flex">
+          {/* Mail sidebar — hidden once the mockup sits in the half-width hero column */}
+          <div className="hidden w-44 shrink-0 flex-col border-r border-line py-3 md:flex lg:hidden">
             <div className="px-3">
               <span className="flex h-9 items-center justify-center gap-1.5 rounded-lg bg-brand text-[13px] font-semibold text-white">
                 <Send className="h-3.5 w-3.5" /> Compose
@@ -381,7 +381,7 @@ export default function HeroMockup() {
           </div>
 
           {/* AI panel */}
-          <div className="hidden w-60 shrink-0 flex-col border-l border-line bg-brand-faint/40 lg:flex">
+          <div className="hidden w-60 shrink-0 flex-col border-l border-line bg-brand-faint/40 xl:flex">
             <div className="flex items-center gap-2 border-b border-line px-4 py-3">
               <span className="flex h-6 w-6 items-center justify-center rounded-md bg-gradient-to-br from-brand to-app-chat">
                 <Sparkles className="h-3.5 w-3.5 text-white" />

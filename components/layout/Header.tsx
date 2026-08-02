@@ -157,13 +157,13 @@ export default function Header() {
         <div className="hidden items-center gap-2 lg:flex">
           <Link
             href="/contact-sales"
-            className="rounded-lg px-3 py-2 text-[15px] font-medium text-ink transition-colors duration-200 hover:bg-brand-faint"
+            className="whitespace-nowrap rounded-lg px-3 py-2 text-[15px] font-medium text-ink transition-colors duration-200 hover:bg-brand-faint"
           >
             Contact sales
           </Link>
           <Link
             href="/login"
-            className="rounded-lg px-3 py-2 text-[15px] font-medium text-ink transition-colors duration-200 hover:bg-brand-faint"
+            className="whitespace-nowrap rounded-lg px-3 py-2 text-[15px] font-medium text-ink transition-colors duration-200 hover:bg-brand-faint"
           >
             Sign in
           </Link>
