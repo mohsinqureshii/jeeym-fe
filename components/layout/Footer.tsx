@@ -12,20 +12,25 @@ function XIcon({ className }: { className?: string }) {
   );
 }
 
+const selectCls =
+  "h-10 appearance-none rounded-lg border border-white/15 bg-white/5 pl-9 pr-8 text-[14px] font-medium text-white [&>option]:text-ink";
+
 export default function Footer() {
   return (
-    <footer className="border-t border-line bg-brand-faint" aria-label="Footer">
+    <footer className="bg-[#0B1220] text-slate-300" aria-label="Footer">
       <div className="container-site pb-10 pt-16 lg:pt-20">
         <div className="grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3 lg:grid-cols-6">
           {footerColumns.map((col) => (
             <nav key={col.heading} aria-label={`Footer: ${col.heading}`}>
-              <p className="mb-4 text-[14px] font-bold text-ink">{col.heading}</p>
+              <p className="mb-4 text-[14px] font-bold text-white">
+                {col.heading}
+              </p>
               <ul className="space-y-2.5">
                 {col.links.map((l) => (
                   <li key={l.label}>
                     <Link
                       href={l.href}
-                      className="text-[14px] text-body transition-colors duration-200 hover:text-brand"
+                      className="text-[14px] text-slate-400 transition-colors duration-200 hover:text-white"
                     >
                       {l.label}
                     </Link>
@@ -36,10 +41,10 @@ export default function Footer() {
           ))}
         </div>
 
-        <div className="mt-14 flex flex-col gap-6 border-t border-line pt-8 lg:flex-row lg:items-center lg:justify-between">
+        <div className="mt-14 flex flex-col gap-6 border-t border-white/10 pt-8 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
-            <Logo />
-            <p className="text-[14px] text-body">
+            <Logo inverted />
+            <p className="text-[14px] text-slate-400">
               © 2026 Jeeym. All rights reserved.
             </p>
           </div>
@@ -50,14 +55,10 @@ export default function Footer() {
             </label>
             <div className="relative">
               <Globe
-                className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-body"
+                className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
                 aria-hidden="true"
               />
-              <select
-                id="footer-language"
-                defaultValue="en"
-                className="h-10 appearance-none rounded-lg border border-line bg-white pl-9 pr-8 text-[14px] font-medium text-ink"
-              >
+              <select id="footer-language" defaultValue="en" className={selectCls}>
                 <option value="en">English</option>
                 <option value="ar">العربية</option>
                 <option value="fr">Français</option>
@@ -70,14 +71,10 @@ export default function Footer() {
             </label>
             <div className="relative">
               <MapPin
-                className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-body"
+                className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
                 aria-hidden="true"
               />
-              <select
-                id="footer-region"
-                defaultValue="global"
-                className="h-10 appearance-none rounded-lg border border-line bg-white pl-9 pr-8 text-[14px] font-medium text-ink"
-              >
+              <select id="footer-region" defaultValue="global" className={selectCls}>
                 <option value="global">Global</option>
                 <option value="sa">Saudi Arabia</option>
                 <option value="ae">United Arab Emirates</option>
@@ -92,7 +89,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Jeeym on LinkedIn"
-                className="flex h-10 w-10 items-center justify-center rounded-lg text-body transition-colors hover:bg-white hover:text-brand"
+                className="flex h-10 w-10 items-center justify-center rounded-lg text-slate-400 transition-colors hover:bg-white/10 hover:text-white"
               >
                 <Linkedin className="h-5 w-5" aria-hidden="true" />
               </a>
@@ -101,7 +98,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Jeeym on X"
-                className="flex h-10 w-10 items-center justify-center rounded-lg text-body transition-colors hover:bg-white hover:text-brand"
+                className="flex h-10 w-10 items-center justify-center rounded-lg text-slate-400 transition-colors hover:bg-white/10 hover:text-white"
               >
                 <XIcon className="h-4 w-4" />
               </a>
@@ -110,7 +107,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Jeeym on YouTube"
-                className="flex h-10 w-10 items-center justify-center rounded-lg text-body transition-colors hover:bg-white hover:text-brand"
+                className="flex h-10 w-10 items-center justify-center rounded-lg text-slate-400 transition-colors hover:bg-white/10 hover:text-white"
               >
                 <Youtube className="h-5 w-5" aria-hidden="true" />
               </a>

@@ -17,7 +17,7 @@ const placeholderLogos = [
 
 export default function LogoStrip() {
   return (
-    <section className="border-b border-line bg-white py-14 sm:py-16" aria-label="Trusted organisations">
+    <section className="bg-white py-14 sm:py-16" aria-label="Trusted organisations">
       <div className="container-site">
         <Reveal>
           <p className="text-center text-[15px] font-semibold text-ink">

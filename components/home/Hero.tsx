@@ -5,14 +5,18 @@ import HeroMockup from "./HeroMockup";
 
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden bg-brand-faint pb-24 pt-16 sm:pt-20 lg:pb-32 lg:pt-24">
+    <section className="relative overflow-hidden bg-gradient-to-b from-brand-wash via-[#F5F4FF] to-white pb-24 pt-16 sm:pt-20 lg:pb-28 lg:pt-24">
       {/* Soft background orbs */}
       <div
-        className="pointer-events-none absolute -top-40 left-1/2 h-[34rem] w-[34rem] -translate-x-[80%] rounded-full bg-brand-wash opacity-80 blur-3xl animate-orb-slow"
+        className="pointer-events-none absolute -top-40 left-1/2 h-[34rem] w-[34rem] -translate-x-[85%] rounded-full bg-[#DBEAFE] opacity-70 blur-3xl animate-orb-slow"
         aria-hidden="true"
       />
       <div
-        className="pointer-events-none absolute -top-20 right-0 h-[28rem] w-[28rem] translate-x-1/3 rounded-full bg-[#EDE9FE] opacity-60 blur-3xl animate-orb-slower"
+        className="pointer-events-none absolute -top-24 right-0 h-[30rem] w-[30rem] translate-x-1/3 rounded-full bg-[#EDE9FE] opacity-70 blur-3xl animate-orb-slower"
+        aria-hidden="true"
+      />
+      <div
+        className="pointer-events-none absolute bottom-0 left-0 h-[24rem] w-[24rem] -translate-x-1/3 rounded-full bg-[#FFF1E6] opacity-50 blur-3xl animate-orb-slow"
         aria-hidden="true"
       />
 
@@ -29,7 +33,9 @@ export default function Hero() {
             <h1 className="mt-7 text-hero text-ink">
               One workplace.
               <br />
-              Everything your team needs.
+              <span className="bg-gradient-to-r from-brand via-brand-bright to-app-chat bg-clip-text text-transparent">
+                Everything your team needs.
+              </span>
             </h1>
           </Reveal>
 

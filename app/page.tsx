@@ -1,19 +1,17 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import Hero from "@/components/home/Hero";
 import LogoStrip from "@/components/home/LogoStrip";
-import ConnectedWorkflow from "@/components/home/ConnectedWorkflow";
-import ProductEcosystem from "@/components/home/ProductEcosystem";
-import AISection from "@/components/home/AISection";
-import DataResidencySection from "@/components/home/DataResidencySection";
-import SecuritySection from "@/components/home/SecuritySection";
-import FreePlanSection from "@/components/home/FreePlanSection";
-import SolutionsTabs from "@/components/home/SolutionsTabs";
-import DevicesSection from "@/components/home/DevicesSection";
-import MigrationSection from "@/components/home/MigrationSection";
-import CustomerStory from "@/components/home/CustomerStory";
-import PricingPreview from "@/components/home/PricingPreview";
+import TeamCarousel from "@/components/home/TeamCarousel";
+import StatsBand from "@/components/home/StatsBand";
+import TeamWorkflowTabs from "@/components/home/TeamWorkflowTabs";
+import OnePlatformGrid from "@/components/home/OnePlatformGrid";
+import TestimonialsRow from "@/components/home/TestimonialsRow";
+import SecurityBand from "@/components/home/SecurityBand";
+import ExploreGrid from "@/components/home/ExploreGrid";
+import PricingPlans from "@/components/shared/PricingPlans";
 import CTASection from "@/components/shared/CTASection";
-import Section, { SectionHeader } from "@/components/ui/Section";
 import Reveal from "@/components/ui/Reveal";
 import { site } from "@/lib/site";
 
@@ -28,43 +26,45 @@ export default function HomePage() {
     <>
       <Hero />
       <LogoStrip />
+      <TeamCarousel />
+      <StatsBand />
+      <TeamWorkflowTabs />
+      <OnePlatformGrid />
+      <TestimonialsRow />
+      <SecurityBand />
 
-      <Section tone="faint" id="connected-workplace">
-        <SectionHeader
-          eyebrow="One connected workplace"
-          title="Stop switching between disconnected tools"
-          copy="Work becomes slower when communication, files, meetings, tasks and knowledge live in different applications. Jeeym brings them together so people can move from conversation to action without losing context."
-        />
-        <Reveal>
-          <ConnectedWorkflow />
-        </Reveal>
-        <Reveal className="mt-12">
-          <p className="text-center text-[17px] font-semibold text-ink">
-            From message to meeting to document to decision—
-            <span className="text-brand">without leaving Jeeym.</span>
-          </p>
-        </Reveal>
-      </Section>
+      {/* Pricing */}
+      <section className="bg-white py-16 sm:py-20 lg:py-24" id="pricing-preview">
+        <div className="container-site">
+          <Reveal>
+            <div className="mx-auto mb-12 max-w-2xl text-center">
+              <h2 className="text-display text-ink">
+                Pick the plan that fits your team
+              </h2>
+              <p className="mt-4 text-lead text-body">
+                Start free with your first five users. Upgrade when you need
+                more capacity, control or compliance options.
+              </p>
+            </div>
+          </Reveal>
+          <PricingPlans />
+          <Reveal className="mt-8 text-center">
+            <Link
+              href="/pricing"
+              className="inline-flex items-center gap-1.5 text-[15px] font-semibold text-brand hover:text-brand-deep"
+            >
+              Compare all plan features
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Link>
+          </Reveal>
+        </div>
+      </section>
 
-      <ProductEcosystem />
-      <AISection />
-      <DataResidencySection />
-      <SecuritySection />
-      <FreePlanSection />
-
-      <Section tone="white" id="solutions">
-        <SectionHeader
-          title="Built for every stage of organisational growth"
-          copy="From your first five users to a regulated, multi-region enterprise—Jeeym adapts to how your organisation works."
-        />
-        <SolutionsTabs />
-      </Section>
-
-      <DevicesSection />
-      <MigrationSection />
-      <CustomerStory />
-      <PricingPreview />
-      <CTASection />
+      <ExploreGrid />
+      <CTASection
+        headline="Get more done, in one place"
+        copy="Start with up to 5 users for free, or speak with our team about enterprise security, migration and data residency."
+      />
     </>
   );
 }
