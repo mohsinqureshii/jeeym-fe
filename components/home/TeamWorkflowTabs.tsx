@@ -25,7 +25,7 @@ export default function TeamWorkflowTabs() {
   if (!solution) return null;
 
   return (
-    <section className="bg-brand-faint py-16 sm:py-20 lg:py-28">
+    <section className="bg-gradient-to-b from-[#F1FBF5] to-[#E2F6EB] py-16 sm:py-20 lg:py-28">
       <div className="container-site">
         <div className="mx-auto mb-10 max-w-2xl text-center">
           <h2 className="text-display text-ink">

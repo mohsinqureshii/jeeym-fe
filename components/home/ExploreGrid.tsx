@@ -51,7 +51,7 @@ const tiles = [
 
 export default function ExploreGrid() {
   return (
-    <section className="bg-brand-faint py-16 sm:py-20 lg:py-24">
+    <section className="bg-gradient-to-b from-[#FFFBF3] to-[#FCF0DF] py-16 sm:py-20 lg:py-24">
       <div className="container-site">
         <Reveal>
           <div className="mx-auto mb-12 max-w-2xl text-center">

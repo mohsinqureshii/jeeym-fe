@@ -35,7 +35,7 @@ const quotes = [
 
 export default function TestimonialsRow() {
   return (
-    <section className="bg-white py-16 sm:py-20 lg:py-24">
+    <section className="bg-gradient-to-b from-[#F6F7FF] to-[#EBEEFF] py-16 sm:py-20 lg:py-24">
       <div className="container-site">
         <Reveal>
           <div className="mx-auto mb-12 max-w-2xl text-center">
@@ -48,7 +48,7 @@ export default function TestimonialsRow() {
         <div className="grid gap-5 lg:grid-cols-3">
           {quotes.map((q, i) => (
             <Reveal key={q.role} delay={i * 0.08}>
-              <figure className="flex h-full flex-col rounded-2.5xl border border-line bg-brand-faint/60 p-7 transition-shadow duration-200 hover:shadow-card">
+              <figure className="flex h-full flex-col rounded-2.5xl border border-white/80 bg-white p-7 shadow-card transition-shadow duration-200 hover:shadow-card-hover">
                 <Quote
                   className="h-8 w-8 rounded-lg bg-brand p-1.5 text-white"
                   aria-hidden="true"

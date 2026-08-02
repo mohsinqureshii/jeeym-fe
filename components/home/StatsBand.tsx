@@ -26,7 +26,10 @@ const stats = [
 
 export default function StatsBand() {
   return (
-    <section className="bg-brand-faint py-16 sm:py-20" aria-label="Why one platform">
+    <section
+      className="bg-gradient-to-b from-[#F0F7FF] to-[#E2EFFF] py-16 sm:py-20"
+      aria-label="Why one platform"
+    >
       <div className="container-site">
         <Reveal>
           <div className="mx-auto mb-12 max-w-2xl text-center">

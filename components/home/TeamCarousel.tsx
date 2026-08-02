@@ -591,29 +591,49 @@ export default function TeamCarousel() {
   };
 
   return (
-    <section className="overflow-hidden bg-white py-16 sm:py-20 lg:py-24">
+    <section className="overflow-hidden bg-gradient-to-b from-[#FBFAFF] to-[#F1EDFF] py-16 sm:py-20 lg:py-24">
       <Reveal>
         <div className="container-site">
-          <div className="mx-auto mb-12 max-w-2xl text-center">
+          <div className="mx-auto mb-12 max-w-3xl text-center">
             <h2 className="text-display text-ink">
               How every team runs smarter with Jeeym
             </h2>
-            <Link
-              href="/start"
-              className="mt-7 inline-flex h-[52px] items-center gap-2 rounded-full bg-gradient-to-r from-brand via-brand-bright to-app-chat px-8 text-base font-semibold text-white shadow-[0_4px_20px_rgba(59,130,246,0.35)] transition-all duration-200 hover:shadow-[0_6px_28px_rgba(59,130,246,0.45)] active:translate-y-px"
-            >
-              Start free
-              <ArrowRight className="h-4 w-4" aria-hidden="true" />
-            </Link>
+            <div className="mt-7 flex items-center justify-center gap-3">
+              <Link
+                href="/start"
+                className="inline-flex h-[52px] items-center gap-2 rounded-full bg-gradient-to-r from-brand via-brand-bright to-app-chat px-8 text-base font-semibold text-white shadow-[0_4px_20px_rgba(59,130,246,0.35)] transition-all duration-200 hover:shadow-[0_6px_28px_rgba(59,130,246,0.45)] active:translate-y-px"
+              >
+                Start free
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </Link>
+              <button
+                type="button"
+                onClick={() => scrollBy(-1)}
+                disabled={!canPrev}
+                aria-label="Previous card"
+                className="flex h-[52px] w-[52px] items-center justify-center rounded-full border border-line bg-white text-ink shadow-sm transition-all duration-200 hover:bg-brand-faint hover:shadow-card disabled:opacity-35"
+              >
+                <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+              </button>
+              <button
+                type="button"
+                onClick={() => scrollBy(1)}
+                disabled={!canNext}
+                aria-label="Next card"
+                className="flex h-[52px] w-[52px] items-center justify-center rounded-full border border-line bg-white text-ink shadow-sm transition-all duration-200 hover:bg-brand-faint hover:shadow-card disabled:opacity-35"
+              >
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </button>
+            </div>
           </div>
         </div>
       </Reveal>
 
-      {/* Full-bleed track: first card aligns with the page container, the rest bleed to the edge */}
+      {/* Full-bleed track with a slim gutter — the first card starts near the edge */}
       <div
         ref={trackRef}
         onScroll={updateArrows}
-        className="flex snap-x snap-mandatory gap-7 overflow-x-auto scroll-smooth pb-5 pt-2 scrollbar-none px-[max(1.25rem,calc((100vw_-_76rem)/2_+_2.5rem))] scroll-px-[max(1.25rem,calc((100vw_-_76rem)/2_+_2.5rem))]"
+        className="flex snap-x snap-mandatory gap-7 overflow-x-auto scroll-smooth px-5 pb-5 pt-2 scrollbar-none scroll-px-5 sm:px-8 sm:scroll-px-8"
       >
         {cards.map((card, i) => (
           <motion.article
@@ -669,27 +689,6 @@ export default function TeamCarousel() {
         ))}
       </div>
 
-      {/* Arrows */}
-      <div className="mt-6 flex items-center justify-center gap-3">
-        <button
-          type="button"
-          onClick={() => scrollBy(-1)}
-          disabled={!canPrev}
-          aria-label="Previous card"
-          className="flex h-12 w-12 items-center justify-center rounded-full border border-line bg-white text-ink shadow-sm transition-all duration-200 hover:bg-brand-faint hover:shadow-card disabled:opacity-35"
-        >
-          <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-        </button>
-        <button
-          type="button"
-          onClick={() => scrollBy(1)}
-          disabled={!canNext}
-          aria-label="Next card"
-          className="flex h-12 w-12 items-center justify-center rounded-full border border-line bg-white text-ink shadow-sm transition-all duration-200 hover:bg-brand-faint hover:shadow-card disabled:opacity-35"
-        >
-          <ArrowRight className="h-4 w-4" aria-hidden="true" />
-        </button>
-      </div>
     </section>
   );
 }

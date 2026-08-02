@@ -34,7 +34,10 @@ export default function HomePage() {
       <SecurityBand />
 
       {/* Pricing */}
-      <section className="bg-white py-16 sm:py-20 lg:py-24" id="pricing-preview">
+      <section
+        className="bg-gradient-to-b from-[#F7FAFF] to-[#EBF3FF] py-16 sm:py-20 lg:py-24"
+        id="pricing-preview"
+      >
         <div className="container-site">
           <Reveal>
             <div className="mx-auto mb-12 max-w-2xl text-center">

@@ -22,7 +22,7 @@ const columns = [
 
 export default function SecurityBand() {
   return (
-    <section className="relative overflow-hidden bg-brand-wash py-16 sm:py-20 lg:py-24">
+    <section className="relative overflow-hidden bg-gradient-to-b from-[#EEFBF8] to-[#DBF4EE] py-16 sm:py-20 lg:py-24">
       <div
         className="pointer-events-none absolute -right-32 -top-24 h-96 w-96 rounded-full bg-white/60 blur-3xl animate-orb-slow"
         aria-hidden="true"

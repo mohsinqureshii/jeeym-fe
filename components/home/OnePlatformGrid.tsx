@@ -10,7 +10,10 @@ export default function OnePlatformGrid() {
   const ai = products.find((p) => p.id === "ai")!;
 
   return (
-    <section className="bg-white py-16 sm:py-20 lg:py-28" id="products">
+    <section
+      className="bg-gradient-to-b from-white to-[#FFF6EC] py-16 sm:py-20 lg:py-28"
+      id="products"
+    >
       <div className="container-site">
         <Reveal>
           <div className="mx-auto mb-12 max-w-2xl text-center">
