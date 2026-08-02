@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 const floatingApps = [
   { icon: Mail, color: "#2563EB", className: "left-[12%] top-[22%]", delay: "0s" },
   { icon: MessageSquare, color: "#8B5CF6", className: "right-[16%] top-[16%]", delay: "1.2s" },
-  { icon: Video, color: "#059669", className: "left-[20%] top-[58%]", delay: "0.6s" },
+  { icon: Video, color: "#059669", className: "left-[16%] top-[76%]", delay: "0.6s" },
   { icon: Calendar, color: "#F97316", className: "right-[12%] top-[46%]", delay: "1.8s" },
   { icon: HardDrive, color: "#0D9488", className: "left-[42%] top-[38%]", delay: "0.3s" },
   { icon: FileText, color: "#3B82F6", className: "right-[34%] top-[68%]", delay: "0.9s" },
@@ -51,7 +51,7 @@ export default function LoginPage() {
           </span>
         ))}
         <div className="relative flex h-full flex-col justify-between p-12">
-          <Logo inverted />
+          <Logo inverted animated />
           <div className="max-w-md">
             <span
               className="mb-5 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/15"
