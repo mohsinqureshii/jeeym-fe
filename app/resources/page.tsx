@@ -16,13 +16,14 @@ import Button from "@/components/ui/Button";
 import Reveal from "@/components/ui/Reveal";
 import Section, { SectionHeader } from "@/components/ui/Section";
 import CTASection from "@/components/shared/CTASection";
+import { buildMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildMetadata({
   title: "Resources — Guides, stories and support for your workplace",
   description:
-    "Help centre, product guides, customer stories, webinars, product updates, developer documentation and migration resources for Jeeym.",
-  alternates: { canonical: "/resources" },
-};
+    "Jeeym help centre, product guides, customer stories, webinars, product updates, developer documentation and migration resources for moving from Google Workspace or Microsoft 365.",
+  path: "/resources",
+});
 
 const resourceCards = [
   {

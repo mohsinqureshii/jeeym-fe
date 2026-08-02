@@ -9,27 +9,16 @@ import FeatureGrid from "@/components/shared/FeatureGrid";
 import CTASection from "@/components/shared/CTASection";
 import ProductMockup from "./ProductMockup";
 import { getProduct, productMap, type ProductId } from "@/lib/products";
+import { buildMetadata } from "@/lib/seo";
 import { site } from "@/lib/site";
 
 export function productMetadata(id: ProductId): Metadata {
   const product = getProduct(id);
-  return {
+  return buildMetadata({
     title: product.seo.title,
     description: product.seo.description,
-    alternates: { canonical: product.href },
-    openGraph: {
-      title: product.seo.title,
-      description: product.seo.description,
-      url: product.href,
-      type: "website",
-      siteName: "Jeeym",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: product.seo.title,
-      description: product.seo.description,
-    },
-  };
+    path: product.href,
+  });
 }
 
 export default function ProductPageTemplate({ id }: { id: ProductId }) {

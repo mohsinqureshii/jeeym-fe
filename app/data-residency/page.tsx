@@ -18,13 +18,14 @@ import Section, { SectionHeader } from "@/components/ui/Section";
 import DataResidencyMap from "@/components/shared/DataResidencyMap";
 import FeatureGrid from "@/components/shared/FeatureGrid";
 import CTASection from "@/components/shared/CTASection";
+import { buildMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Data residency — Choose where your workplace data lives",
+export const metadata: Metadata = buildMetadata({
+  title: "Data residency — In-country data hosting and regional options",
   description:
-    "Jeeym provides deployment and hosting options for organisations that need greater control over data location, isolation and regulatory alignment.",
-  alternates: { canonical: "/data-residency" },
-};
+    "Local data residency for your workplace: in-country data hosting in Saudi Arabia and the UAE, regional hosting in Europe and the US, dedicated environments and customer-selected data location.",
+  path: "/data-residency",
+});
 
 const residencyDetails = [
   {

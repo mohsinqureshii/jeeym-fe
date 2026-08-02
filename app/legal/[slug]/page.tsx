@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getLegalPage, legalPages } from "@/lib/legal";
+import { buildMetadata } from "@/lib/seo";
 
 interface Props {
   params: { slug: string };
@@ -14,11 +15,11 @@ export function generateStaticParams() {
 export function generateMetadata({ params }: Props): Metadata {
   const page = getLegalPage(params.slug);
   if (!page) return {};
-  return {
+  return buildMetadata({
     title: page.title,
     description: page.description,
-    alternates: { canonical: `/legal/${page.slug}` },
-  };
+    path: `/legal/${page.slug}`,
+  });
 }
 
 export default function LegalPageRoute({ params }: Props) {

@@ -21,13 +21,14 @@ import SecurityDashboard from "@/components/shared/SecurityDashboard";
 import FeatureGrid from "@/components/shared/FeatureGrid";
 import CTASection from "@/components/shared/CTASection";
 import { securityPillars } from "@/components/home/SecuritySection";
+import { buildMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Security — Built into the workplace",
+export const metadata: Metadata = buildMetadata({
+  title: "Security — Secure workplace software, built in",
   description:
-    "Protect identities, conversations, files, meetings and organisational knowledge through centralised security and administration in Jeeym.",
-  alternates: { canonical: "/security" },
-};
+    "Jeeym is secure workplace software with encryption in transit and at rest, single sign-on, role-based access control, audit logs and central administration across email, chat, meetings and files.",
+  path: "/security",
+});
 
 const architecture = [
   {

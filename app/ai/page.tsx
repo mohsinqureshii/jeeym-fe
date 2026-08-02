@@ -22,22 +22,15 @@ import CTASection from "@/components/shared/CTASection";
 import ProductMockup from "@/components/product/ProductMockup";
 import { getProduct, productMap } from "@/lib/products";
 import AppIcon from "@/components/ui/AppIcon";
+import { buildMetadata } from "@/lib/seo";
 import { site } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "Jeeym AI — Your workplace, with an intelligent layer",
+export const metadata: Metadata = buildMetadata({
+  title: "Jeeym AI — The AI assistant for your workplace",
   description:
-    "Jeeym AI helps employees understand information, create content, prepare for work and take action across the tools they already use—while respecting permissions.",
-  alternates: { canonical: "/ai" },
-  openGraph: {
-    title: "Jeeym AI — Your workplace, with an intelligent layer",
-    description:
-      "AI that answers questions, drafts content, summarises meetings and takes action across your workplace.",
-    url: "/ai",
-    type: "website",
-    siteName: "Jeeym",
-  },
-};
+    "Jeeym AI answers questions across company knowledge, drafts content, summarises meetings and takes action in your AI workplace—while strictly respecting user permissions.",
+  path: "/ai",
+});
 
 const capabilities = [
   {

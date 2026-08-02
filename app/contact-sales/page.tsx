@@ -9,13 +9,14 @@ import {
 } from "lucide-react";
 import Reveal from "@/components/ui/Reveal";
 import ContactForm from "@/components/shared/ContactForm";
+import { buildMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildMetadata({
   title: "Contact sales — Design the right workplace for your organisation",
   description:
-    "Talk to the Jeeym team about enterprise pricing, migration support, security review, data residency, dedicated environments and product demonstrations.",
-  alternates: { canonical: "/contact-sales" },
-};
+    "Talk to the Jeeym team about enterprise pricing, migration from Google Workspace or Microsoft 365, security review, in-country data residency, dedicated environments and product demonstrations.",
+  path: "/contact-sales",
+});
 
 const sidePanel = [
   {

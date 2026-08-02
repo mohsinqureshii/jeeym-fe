@@ -10,13 +10,14 @@ import {
 } from "lucide-react";
 import Logo from "@/components/ui/Logo";
 import LoginForm from "@/components/shared/LoginForm";
+import { buildMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildMetadata({
   title: "Sign in",
   description: "Sign in to your Jeeym workplace.",
-  alternates: { canonical: "/login" },
-  robots: { index: false },
-};
+  path: "/login",
+  noIndex: true,
+});
 
 const floatingApps = [
   { icon: Mail, color: "#2563EB", className: "left-[12%] top-[22%]", delay: "0s" },

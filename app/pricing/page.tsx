@@ -6,14 +6,15 @@ import PricingTable from "@/components/shared/PricingTable";
 import FAQ from "@/components/shared/FAQ";
 import CTASection from "@/components/shared/CTASection";
 import { pricingFaqs } from "@/lib/faqs";
+import { buildMetadata } from "@/lib/seo";
 import { site } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildMetadata({
   title: "Pricing — Start free. Upgrade as your organisation grows.",
   description:
-    "Jeeym is free for up to 5 users with core workplace applications and starter AI access. Business and Enterprise plans add capacity, controls and data residency options.",
-  alternates: { canonical: "/pricing" },
-};
+    "Jeeym pricing: free for up to 5 users with business email, chat, meetings, documents and starter AI access. Business and Enterprise plans add capacity, admin controls, SSO and data residency options.",
+  path: "/pricing",
+});
 
 const faqSchema = {
   "@context": "https://schema.org",

@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import Reveal from "@/components/ui/Reveal";
 import SignupForm from "@/components/shared/SignupForm";
+import { buildMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildMetadata({
   title: "Start free — Create your Jeeym workplace",
   description:
-    "Create your Jeeym workplace in minutes. Free for up to 5 users. No credit card required.",
-  alternates: { canonical: "/start" },
-};
+    "Create your Jeeym workplace in minutes: business email, team chat, video meetings, documents and AI. Free for up to 5 users. No credit card required.",
+  path: "/start",
+});
 
 const steps = [
   { title: "Enter work email", copy: "Start with the address you use at work." },

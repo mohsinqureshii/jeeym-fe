@@ -17,13 +17,14 @@ import ProductOrbit from "@/components/product/ProductOrbit";
 import ProductCard from "@/components/shared/ProductCard";
 import CTASection from "@/components/shared/CTASection";
 import { products } from "@/lib/products";
+import { buildMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Product overview — Your complete workplace, connected by design",
+export const metadata: Metadata = buildMetadata({
+  title: "Product overview — The connected workplace platform",
   description:
-    "Jeeym combines the applications employees use every day with shared identity, unified search, connected data and built-in AI.",
-  alternates: { canonical: "/product" },
-};
+    "Explore the Jeeym business collaboration platform: business email, team chat, video meetings, documents, cloud storage, tasks and AI—fully integrated with one identity, one search and one admin console.",
+  path: "/product",
+});
 
 const pillars = [
   {

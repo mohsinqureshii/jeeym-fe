@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import Hero from "@/components/home/Hero";
-import LogoStrip from "@/components/home/LogoStrip";
 import TeamCarousel from "@/components/home/TeamCarousel";
 import StatsBand from "@/components/home/StatsBand";
 import TeamWorkflowTabs from "@/components/home/TeamWorkflowTabs";
@@ -13,23 +12,23 @@ import ExploreGrid from "@/components/home/ExploreGrid";
 import PricingPlans from "@/components/shared/PricingPlans";
 import CTASection from "@/components/shared/CTASection";
 import Reveal from "@/components/ui/Reveal";
+import { buildMetadata } from "@/lib/seo";
 import { site } from "@/lib/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildMetadata({
   title: site.title,
   description: site.description,
-  alternates: { canonical: "/" },
-};
+  path: "/",
+});
 
 export default function HomePage() {
   return (
     <>
       <Hero />
-      <LogoStrip />
+      <OnePlatformGrid />
       <TeamCarousel />
       <StatsBand />
       <TeamWorkflowTabs />
-      <OnePlatformGrid />
       <TestimonialsRow />
       <SecurityBand />
 

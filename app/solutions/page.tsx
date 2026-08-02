@@ -6,13 +6,14 @@ import Section, { SectionHeader } from "@/components/ui/Section";
 import CTASection from "@/components/shared/CTASection";
 import SolutionsTabs from "@/components/home/SolutionsTabs";
 import { solutionGroups, solutionsByGroup } from "@/lib/solutions";
+import { buildMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Solutions — Built for every stage of organisational growth",
+export const metadata: Metadata = buildMetadata({
+  title: "Solutions — Team collaboration for every organisation",
   description:
-    "Jeeym solutions for startups, growing businesses, enterprises, regulated organisations, government and every team in between.",
-  alternates: { canonical: "/solutions" },
-};
+    "Jeeym team collaboration solutions for startups, small businesses, mid-market, enterprises and government—plus secure communication, knowledge management, remote work and data residency needs.",
+  path: "/solutions",
+});
 
 export default function SolutionsPage() {
   return (

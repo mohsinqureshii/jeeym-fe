@@ -82,10 +82,6 @@ export default function TestimonialsRow() {
             Read customer stories
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Button>
-          <p className="mt-6 max-w-md rounded-lg border border-dashed border-warning/40 bg-amber-50 px-4 py-2.5 text-[12.5px] font-medium text-amber-700">
-            CMS note: placeholder quotes — replace with verified customer
-            quotes before publication.
-          </p>
         </Reveal>
       </div>
     </section>

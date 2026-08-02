@@ -9,6 +9,7 @@ import AppIcon from "@/components/ui/AppIcon";
 import CTASection from "@/components/shared/CTASection";
 import { getSolution, solutions } from "@/lib/solutions";
 import { productMap } from "@/lib/products";
+import { buildMetadata } from "@/lib/seo";
 import { site } from "@/lib/site";
 
 interface Props {
@@ -22,11 +23,11 @@ export function generateStaticParams() {
 export function generateMetadata({ params }: Props): Metadata {
   const solution = getSolution(params.slug);
   if (!solution) return {};
-  return {
+  return buildMetadata({
     title: `Jeeym for ${solution.name}`,
     description: solution.seoDescription,
-    alternates: { canonical: `/solutions/${solution.slug}` },
-  };
+    path: `/solutions/${solution.slug}`,
+  });
 }
 
 export default function SolutionPage({ params }: Props) {

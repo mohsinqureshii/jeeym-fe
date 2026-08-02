@@ -13,13 +13,14 @@ import Reveal from "@/components/ui/Reveal";
 import Section, { SectionHeader } from "@/components/ui/Section";
 import FeatureGrid from "@/components/shared/FeatureGrid";
 import CTASection from "@/components/shared/CTASection";
+import { buildMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildMetadata({
   title: "About Jeeym — We believe work should feel connected",
   description:
-    "Jeeym was created to help organisations replace fragmented workplace tools with one secure, intelligent and human-centred environment.",
-  alternates: { canonical: "/about" },
-};
+    "Jeeym was created to help organisations replace fragmented workplace tools with one secure, intelligent and human-centred workplace platform. Read our mission and philosophy.",
+  path: "/about",
+});
 
 const beliefs = [
   {
