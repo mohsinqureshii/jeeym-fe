@@ -33,10 +33,7 @@ export default function Hero() {
 
             <Reveal delay={0.08}>
               <h1 className="mt-7 text-[clamp(2.5rem,4.2vw,3.625rem)] font-bold leading-[1.1] tracking-[-0.03em] text-ink">
-                One workplace.{" "}
-                <span className="bg-gradient-to-r from-brand via-brand-bright to-app-chat bg-clip-text text-transparent">
-                  Everything your team needs.
-                </span>
+                One workplace. Everything your team needs.
               </h1>
             </Reveal>
 
